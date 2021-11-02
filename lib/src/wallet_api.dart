@@ -226,6 +226,7 @@ class WalletApi extends Api {
         "walletAddress": resp["data"]["walletAddress"],
         "createdAt": resp["data"]["createdAt"],
         "updatedAt": resp["data"]["updatedAt"],
+        "walletModules": resp['data']['walletModules'],
         "communityManager": resp['data']['walletModules']['CommunityManager'],
         "transferManager": resp['data']['walletModules']['TransferManager'],
         "dAIPointsManager":
@@ -548,6 +549,35 @@ class WalletApi extends Api {
       amountInWei: amountInWei,
       transactionBody: transactionBody,
       txMetadata: txMetadata,
+    );
+    Map<String, dynamic> resp = await _post(
+      'v1/relay',
+      private: true,
+      body: signedData,
+    );
+    return resp;
+  }
+
+  Future<dynamic> callManagerContractFunction(
+    Web3 web3,
+    String walletAddress,
+    String managerContractName,
+    String managerContractAddress,
+    String functionName,
+    List<dynamic> params, {
+    String? network,
+    Map? transactionBody,
+    Map? txMetadata,
+  }) async {
+    Map<String, dynamic> signedData = await web3.callManagerContractFunction(
+      walletAddress,
+      managerContractName,
+      managerContractAddress,
+      functionName,
+      params,
+      network: network,
+      txMetadata: txMetadata,
+      transactionBody: transactionBody,
     );
     Map<String, dynamic> resp = await _post(
       'v1/relay',
