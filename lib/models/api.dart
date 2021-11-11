@@ -12,7 +12,7 @@ abstract class Api {
       case 401:
         throw 'Error! Unauthorized';
       default:
-        throw 'Error! status: ${response.statusCode}, reason: ${response.reasonPhrase}';
+        throw 'Error! status: ${response.statusCode}, reason: ${response.body.toString()} ${response.reasonPhrase}';
     }
   }
 
